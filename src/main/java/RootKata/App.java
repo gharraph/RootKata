@@ -5,7 +5,7 @@ package RootKata;
 
 public class App {
     public String getGreeting() {
-        return "Hello world.";
+        return "Hello Root Driver.";
     }
 
     public static void main(String[] args) {
