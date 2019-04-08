@@ -36,4 +36,8 @@ public class Trip {
     public void setMileDriven(float mileDriven) {
         this.mileDriven = mileDriven;
     }
+
+    public String toString() {
+        return "StartTime:" + startTime + " " + "EndTime:" + endTime + " " + "MilesDriven:" + mileDriven;
+    }
 }
