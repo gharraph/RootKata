@@ -4,6 +4,8 @@
 package RootKata;
 
 import java.io.File;
+import java.util.List;
+
 public class DrivingHistoryApp {
 
     public static void main(String[] args) {
@@ -12,14 +14,14 @@ public class DrivingHistoryApp {
         } else {
             File inputFile  = new File(args[0]);
             parseFile(inputFile);
-
         }
     }
 
     static void parseFile(File inputFile) {
         if (inputFile.isFile()) {
             System.out.println("Driving History for input drivers:");
-            System.out.println(TripInputParser.parse(inputFile));
+            List<DriverSummary> driversHistory = TripInputParser.summarizeTrips(TripInputParser.parse(inputFile));
+            driversHistory.forEach(System.out::println);
         } else {
             System.out.println("The file path you entered is not valid, please enter valid path!");
         }

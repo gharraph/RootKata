@@ -4,10 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class TripInputParser {
@@ -29,7 +28,7 @@ public class TripInputParser {
             e.printStackTrace();
         }
 
-        return  parsedTripRecords;
+        return parsedTripRecords;
     }
 
     private static void addTripToDriver(HashMap<String, List<Trip>> parsedTripRecords, String[] tokens) {
@@ -43,7 +42,31 @@ public class TripInputParser {
 
         float milesDriven = Float.valueOf(tokens[4]);
 
-        parsedTripRecords.get(tokens[1])
-                .add(new Trip(LocalTime.of(startHour, startMinutes), LocalTime.of(endHour, endMinutes), milesDriven));
+        String driverName = tokens[1];
+        Trip trip = new Trip(LocalTime.of(startHour, startMinutes), LocalTime.of(endHour, endMinutes), milesDriven);
+        if (trip.getTripSpeed() > 5 && trip.getTripSpeed() < 100) {
+            parsedTripRecords.get(driverName).add(trip);
+        }
+    }
+
+    public static List<DriverSummary> summarizeTrips (HashMap<String, List<Trip>> parsedTripRecords) {
+        List<DriverSummary> summaryList = new ArrayList<>();
+        parsedTripRecords.forEach((driver, trips) -> {
+            int numberOfTrips = trips.size();
+            if (numberOfTrips == 0) {
+                summaryList.add(new DriverSummary(driver, 0, 0));
+            } else {
+                int totalMilesDriven = 0;
+                float totalDuration = 0f;
+                for(Trip trip : trips) {
+                    totalMilesDriven += Math.round(trip.getMilesDriven());
+                    totalDuration += (float)Duration.between(trip.getStartTime(), trip.getEndTime()).toMinutes()/60f;
+                }
+                int avgSpeed = Math.round(totalMilesDriven / totalDuration);
+                summaryList.add(new DriverSummary(driver, totalMilesDriven, + avgSpeed));
+            }
+        });
+        Collections.sort(summaryList, new SortByLongestMilesDriven());
+        return summaryList;
     }
 }

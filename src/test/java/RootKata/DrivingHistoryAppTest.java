@@ -6,16 +6,17 @@ package RootKata;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.*;
 
 public class DrivingHistoryAppTest {
 
@@ -44,9 +45,11 @@ public class DrivingHistoryAppTest {
 
     @Test
     public void testDrivingHistoryAppRequiresValidFilePath() {
-        File mockedFile = mock(File.class);
-        when(mockedFile.isFile()).thenReturn(true);
-        DrivingHistoryApp.parseFile(mockedFile);
+        try {
+            DrivingHistoryApp.parseFile(createTempFileWith("any text"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         assertThat(outContent.toString(), containsString("Driving History for input drivers:"));
     }
 
@@ -55,5 +58,13 @@ public class DrivingHistoryAppTest {
         String[] filePath = {"~/pathToFileNonValidPath"};
         DrivingHistoryApp.main(filePath);
         assertThat(outContent.toString(), containsString("The file path you entered is not valid, please enter valid path!"));
+    }
+
+    private static File createTempFileWith(String line) throws IOException {
+        Path path = Files.createTempFile("sample-file", ".txt");
+        File file = path.toFile();
+        Files.write(path, line.getBytes(StandardCharsets.UTF_8));
+        file.deleteOnExit();
+        return file;
     }
 }

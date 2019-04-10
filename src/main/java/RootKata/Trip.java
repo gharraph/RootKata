@@ -1,43 +1,33 @@
 package RootKata;
 
+import java.time.Duration;
 import java.time.LocalTime;
 
 public class Trip {
     private LocalTime startTime;
     private LocalTime endTime;
-    private float mileDriven;
+    private float milesDriven;
 
-    public Trip(LocalTime startTime, LocalTime endTime, float mileDriven) {
+    public Trip(LocalTime startTime, LocalTime endTime, float milesDriven) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.mileDriven = mileDriven;
+        this.milesDriven = milesDriven;
     }
 
     public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
-    }
-
     public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
+    public float getMilesDriven() {
+        return milesDriven;
     }
 
-    public float getMileDriven() {
-        return mileDriven;
-    }
-
-    public void setMileDriven(float mileDriven) {
-        this.mileDriven = mileDriven;
-    }
-
-    public String toString() {
-        return "StartTime:" + startTime + " " + "EndTime:" + endTime + " " + "MilesDriven:" + mileDriven;
+    public int getTripSpeed () {
+        float tripDuration = (float)Duration.between(startTime, endTime).toMinutes()/60f;
+        return Math.round(milesDriven/tripDuration);
     }
 }
