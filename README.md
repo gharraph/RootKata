@@ -1,11 +1,10 @@
 # RootKata
 
 ## How to run the application
-- Clone this repo:
+- In any terminal, Clone this repo:
 ```
 git clone https://github.com/gharraph/RootKata.git
 ```
-- In any terminal:
 - Change directory to:
 ```
 RootKata/src/main/java
