@@ -7,3 +7,5 @@ build
 .idea/
 RootKata.iml
 out/
+src/main/java/RootKata/*.class
+
