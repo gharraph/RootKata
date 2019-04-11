@@ -1,9 +1,15 @@
 # RootKata
 
 ## How to run the application
-- Clone this repo 
+- Clone this repo:
+```
+git clone https://github.com/gharraph/RootKata.git
+```
 - In any terminal:
-- Change directory to /RootKata/src/main/java
+- Change directory to:
+```
+RootKata/src/main/java
+```
 - run the following command to compile the code :  
 ```
 javac  RootKata/DrivingHistoryApp.java
